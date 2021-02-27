@@ -55,7 +55,7 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
 
     - name: Build and Push
-      if: github.ref != 'refs/heads/main'
+      if: github.event.number != ''
       uses: docker/build-push-action@v2
       with:
         build-args: VERSION=${{ steps.prep.outputs.version }}
@@ -64,7 +64,7 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          ghcr.io/k8s-at-home/pull-request:${{github.event.number}}
+          ghcr.io/${{ github.repository_owner }}/pull-request:${{github.event.number}}
 
     - name: Build and Push
       if: github.ref == 'refs/heads/main'
@@ -76,5 +76,5 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          ghcr.io/k8s-at-home/${{ env.REGISTRY_IMAGE }}:latest
-          ghcr.io/k8s-at-home/${{ env.REGISTRY_IMAGE }}:v${{ steps.prep.outputs.version }}
+          ghcr.io/${{ github.repository_owner }}/${{ env.REGISTRY_IMAGE }}:latest
+          ghcr.io/${{ github.repository_owner }}/${{ env.REGISTRY_IMAGE }}:v${{ steps.prep.outputs.version }}
