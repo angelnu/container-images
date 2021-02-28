@@ -51,6 +51,7 @@ jobs:
         driver-opts: image=moby/buildkit:master
 
     - name: Login to GitHub Container Registry
+      if: github.event_name != 'pull_request'
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
@@ -78,7 +79,7 @@ jobs:
         context: .
         file: ./${{ github.workflow }}/Dockerfile
         platforms: linux/amd64,linux/arm64
-        push: true
+        push: false # GitHub secrets not available in PRs
         tags: |
           ghcr.io/${{ github.repository_owner }}/pull-request:${{github.event.number}}
         cache-from: type=local,src=/tmp/.buildx-cache
@@ -102,7 +103,7 @@ jobs:
       env:
         GOSS_FILE: ${{ github.workflow }}/goss.yaml
       run: |
-        dgoss run k8sathome/pull-request:${{github.event.number}}
+        dgoss run ghcr.io/${{ github.repository_owner }}/pull-request:${{github.event.number}}
 
     - name: Build and Push (non PR)
       if: github.event_name != 'pull_request'
