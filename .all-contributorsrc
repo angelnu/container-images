@@ -1,0 +1,69 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Ornias1993",
+      "name": "Kjeld Schouten-Lebbing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7613738?v=4",
+      "profile": "http://schouten-lebbing.nl",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nicholaswilde",
+      "name": "Nicholas Wilde",
+      "avatar_url": "https://avatars.githubusercontent.com/u/600019?v=4",
+      "profile": "https://nicholaswilde.github.io/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "angelnu",
+      "name": "Vegetto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4406403?v=4",
+      "profile": "https://github.com/angelnu",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "anthr76",
+      "name": "Anthony Rabbito",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25143877?v=4",
+      "profile": "http://anthonyrabbito.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "bjw-s",
+      "name": "Bᴇʀɴᴅ Sᴄʜᴏʀɢᴇʀs",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6213398?v=4",
+      "profile": "https://github.com/bjw-s",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "onedr0p",
+      "name": "ᗪєνιη ᗷυнʟ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/213795?v=4",
+      "profile": "https://github.com/onedr0p",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "container-images",
+  "projectOwner": "k8s-at-home",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
