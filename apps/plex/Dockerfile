@@ -2,13 +2,14 @@
 FROM ghcr.io/k8s-at-home/ubuntu:latest
 
 ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 ARG VERSION
 
 USER root
 
 ENV NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
-    INTEL_NEO_VERSION=20.48.18558 \
-    INTEL_IGC_VERSION=1.0.5699 \
+    INTEL_NEO_VERSION=21.11.19310 \
+    INTEL_IGC_VERSION=1.0.6646 \
     INTEL_GMMLIB_VERSION=20.3.2 \
     PLEX_DOWNLOAD="https://downloads.plex.tv/plex-media-server-new" \
     PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR="/config/Library/Application Support" \
@@ -40,6 +41,7 @@ RUN \
   apt-get -qq install -y \
     aria2 \
     unrar \
+    unzip \
     uuid-runtime \
     xmlstarlet \
     ${EXTRA_INSTALL_ARG} \
@@ -60,9 +62,7 @@ RUN \
   aria2c -d /tmp -o plex.deb \
     "${PLEX_DOWNLOAD}/${VERSION}/debian/plexmediaserver_${VERSION}_${ARCH}.deb" \
   && \
-  dpkg -i --force-confold --force-architecture /tmp/plex.deb \
-  && \
-  printf "UpdateMethod=docker\nPackageVersion=%s\nPackageAuthor=[Team k8s-at-home](https://github.com/k8s-at-home)" "${VERSION}" > /app/package_info \
+  dpkg -i --force-confold /tmp/plex.deb \
   && \
   apt-get remove -y aria2 \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -74,11 +74,14 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/ \
-  && chmod -R u=rwX,go=rX /app \
+  && chown -R kah:kah "${PLEX_MEDIA_SERVER_HOME}" \
+  && chmod -R u=rwX,go=rX "${PLEX_MEDIA_SERVER_HOME}" \
   && printf "umask %d" "${UMASK}" >> /etc/bash.bashrc \
   && update-ca-certificates
 
 USER kah
+
+WORKDIR "${PLEX_MEDIA_SERVER_HOME}"
 
 EXPOSE 32400/tcp 1900/udp 3005/tcp 5353/udp 8324/tcp 32410/udp 32412/udp 32413/udp 32414/udp 32469/tcp
 

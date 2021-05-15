@@ -1,7 +1,6 @@
 # hadolint ignore=DL3007
 FROM ghcr.io/k8s-at-home/ubuntu:latest
 
-ARG TARGETPLATFORM
 ARG VERSION
 
 USER root
@@ -32,8 +31,6 @@ RUN \
 	  plexapi \
     pycryptodomex \
   && \
-  printf "UpdateMethod=docker\nPackageVersion=%s\nPackageAuthor=[Team k8s-at-home](https://github.com/k8s-at-home)" "${VERSION}" > /app/package_info \
-  && \
   apt-get remove -y ${EXTRA_INSTALL_ARG} \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get autoremove -y \
@@ -43,6 +40,7 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/ \
+  && chown -R kah:kah /app \
   && chmod -R u=rwX,go=rX /app \
   && printf "umask %d" "${UMASK}" >> /etc/bash.bashrc \
   && update-ca-certificates

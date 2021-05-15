@@ -2,6 +2,7 @@
 FROM ghcr.io/k8s-at-home/ubuntu:latest
 
 ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 ARG VERSION
 
 # Sets Jackett config directory
@@ -31,8 +32,6 @@ RUN \
   rm -rf \
     /app/JackettUpdater* \
   && \
-  printf "UpdateMethod=docker\nPackageVersion=%s\nPackageAuthor=[Team k8s-at-home](https://github.com/k8s-at-home)" "${VERSION}" > /app/package_info \
-  && \
   apt-get autoremove -y \
   && apt-get clean \
   && \
@@ -40,6 +39,7 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/ \
+  && chown -R kah:kah /app \
   && chmod -R u=rwX,go=rX /app \
   && printf "umask %d" "${UMASK}" >> /etc/bash.bashrc \
   && update-ca-certificates

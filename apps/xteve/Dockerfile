@@ -1,7 +1,8 @@
 FROM golang:1.16 as builder
 
-ARG VERSION
 ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+ARG VERSION
 
 ENV CGO_ENABLED=0 \
     GOPATH=/go \
@@ -46,8 +47,6 @@ RUN \
     curl \
     vlc \
   && \
-  printf "UpdateMethod=docker\nPackageVersion=%s\nPackageAuthor=[Team k8s-at-home](https://github.com/k8s-at-home)" "${VERSION}" > /app/package_info \
-  && \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get autoremove -y \
   && apt-get clean \
@@ -57,6 +56,7 @@ RUN \
     /var/lib/apt/lists/* \
     /var/cache/apt/* \
     /var/tmp/ \
+  && chown -R kah:kah /app \
   && chmod -R u=rwX,go=rX /app \
   && printf "umask %d" "${UMASK}" >> /etc/bash.bashrc \
   && update-ca-certificates

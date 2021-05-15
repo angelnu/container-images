@@ -2,6 +2,7 @@
 FROM ghcr.io/k8s-at-home/ubuntu:latest as builder
 
 ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 ARG VERSION
 
 # hadolint ignore=DL3002
@@ -111,6 +112,7 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/ \
+  && chown -R kah:kah /app \
   && chmod -R u=rwX,go=rX "${APP_DIR}" \
   && printf "umask %d" "${UMASK}" >> /etc/bash.bashrc \
   && update-ca-certificates
